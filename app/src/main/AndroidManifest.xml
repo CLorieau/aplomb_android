@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Permissions « normales » : accordées à l'installation, sans dialogue. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Surveillance écran éteint : foreground service de type specialUse, et processeur éveillé (pas l'écran). -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Permissions « dangereuses » : déclarées ici ET demandées à l'exécution (PermissionFlow), après une action. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- required="false" : Aplomb reste installable sans boussole (le niveau suffit) ; le Play Store filtrerait sinon. -->
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+    <uses-feature android:name="android.hardware.sensor.compass" android:required="false" />
+    <uses-feature android:name="android.hardware.location" android:required="false" />
+
+    <!-- Android 11+ : visibilité des paquets. Sans cette déclaration, l'app ne « voit » pas
+         les navigateurs installés et « Ouvrir la PWA » ne trouve personne. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
+    <application
+        android:name=".AplombApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Aplomb">
+
+        <!-- Portrait comme la PWA (manifest.json "orientation": "portrait") ; ignoré sur grand écran (targetSdk 37),
+             d'où la rotation de l'affichage prise en compte dans les calculs du niveau et de la boussole. -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Aplomb">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- TD A3 : Aplomb apparaît dans la feuille « Partager » des autres apps pour du texte. -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
+            <!-- App Link : à l'installation, l'OS télécharge https://<pwaHost>/.well-known/assetlinks.json
+                 et y cherche ce package + l'empreinte de la clé. Vérifié : l'URL de la PWA ouvre Aplomb. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="${pwaHost}" />
+            </intent-filter>
+
+            <!-- Raccourcis de l'icône (appui long) : Niveau, Boussole, Relevés. -->
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/raccourcis" />
+        </activity>
+
+        <!-- La fonctionnalité native : surveillance d'aplomb écran éteint. Aucun type standard ne correspond
+             (ce n'est ni de la localisation, ni de la musique, ni de la synchronisation) : specialUse,
+             avec sa justification, relue par Google Play. -->
+        <service
+            android:name=".surveillance.SurveillanceService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Surveillance, demandée par l'utilisateur et visible en permanence, de l'inclinaison du téléphone posé sur un objet (accéléromètre), avec alerte si l'aplomb bouge ; arrêt automatique après 2 h." />
+        </service>
+
+        <!-- Tuile des réglages rapides. BIND_QUICK_SETTINGS_TILE : seul le système peut s'y lier. -->
+        <service
+            android:name=".surveillance.SurveillanceTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tuile"
+            android:label="@string/tuile_titre"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <!-- Message FCM « notification » reçu app en arrière-plan ou tuée : c'est la bibliothèque Firebase qui l'affiche.
+             Sans ces trois valeurs, elle utiliserait un canal « Divers » créé d'office et l'icône de l'app en blanc plein.
+             Avec elles : le canal « Messages » (réglable par l'utilisateur), l'icône monochrome, la couleur de l'app. -->
+        <!-- FCM 25 : register() / onRegistered remplacent getToken() / onNewToken, mais seulement si cette API
+             est activée ici. Sans elle : « Inscription FCM impossible : API disabled », pas de jeton, pas de push. -->
+        <meta-data
+            android:name="firebase_messaging_installation_id_enabled"
+            android:value="true" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="messages" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/accent" />
+
+        <!-- Réception FCM. exported="false" : seul Play Services (via la bibliothèque Firebase) lui parle. -->
+        <service
+            android:name=".notif.AplombMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>

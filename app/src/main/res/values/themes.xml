@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Thème après le splash : sans ActionBar, Compose dessine tout. -->
+    <style name="Theme.Aplomb.Main" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/fond</item>
+    </style>
+
+    <!-- Thème de lancement (core-splashscreen) : l'équivalent du splash généré depuis background_color et l'icône. -->
+    <style name="Theme.Aplomb" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/fond</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/accent</item>
+        <item name="postSplashScreenTheme">@style/Theme.Aplomb.Main</item>
+    </style>
+</resources>

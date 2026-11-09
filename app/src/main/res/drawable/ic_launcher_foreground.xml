@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- favicon.svg de la PWA, agrandi ×1,2 et centré dans la zone sûre (66 dp) de l'icône adaptive :
+     la fiole (cercle blanc), sa croix, la bulle verte décalée. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:strokeColor="#80FFFFFF" android:strokeWidth="1.8" android:pathData="M54,26.4V81.6M26.4,54H81.6" />
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="3.6"
+        android:pathData="M54,54m-22.8,0a22.8,22.8 0,1 1,45.6 0a22.8,22.8 0,1 1,-45.6 0" />
+    <path android:fillColor="#A3E635" android:pathData="M58.8,49.2m-9.6,0a9.6,9.6 0,1 1,19.2 0a9.6,9.6 0,1 1,-19.2 0" />
+</vector>

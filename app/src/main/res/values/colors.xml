@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Les couleurs de la PWA (manifest.json : theme_color, background_color). -->
+    <color name="accent">#0F766E</color>
+    <color name="fond">#F8FAFC</color>
+    <color name="bulle">#A3E635</color>
+</resources>

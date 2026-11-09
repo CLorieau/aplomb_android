@@ -1,0 +1,17 @@
+# Gradle / Android Studio
+build/
+.gradle/
+.idea/
+.kotlin/
+*.iml
+local.properties
+/captures/
+
+# google-services.json : propre à chaque projet Firebase (voir README)
+app/google-services.json
+
+# Keystores : seul debug.keystore (clé debug du cours) est versionné
+*.jks
+*.keystore
+!debug.keystore
+.DS_Store
