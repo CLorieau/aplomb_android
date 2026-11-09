@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Raccourcis statiques de l'icône (appui long). Chacun ouvre MainActivity avec l'onglet voulu. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="niveau" android:enabled="true" android:icon="@drawable/ic_raccourci"
+        android:shortcutShortLabel="@string/raccourci_niveau">
+        <intent android:action="android.intent.action.MAIN"
+            android:targetPackage="corsica.universita.aplomb" android:targetClass="corsica.universita.aplomb.MainActivity">
+            <extra android:name="corsica.universita.aplomb.ONGLET" android:value="niveau" />
+            <extra android:name="corsica.universita.aplomb.SOURCE" android:value="raccourci" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="boussole" android:enabled="true" android:icon="@drawable/ic_raccourci"
+        android:shortcutShortLabel="@string/raccourci_boussole">
+        <intent android:action="android.intent.action.MAIN"
+            android:targetPackage="corsica.universita.aplomb" android:targetClass="corsica.universita.aplomb.MainActivity">
+            <extra android:name="corsica.universita.aplomb.ONGLET" android:value="boussole" />
+            <extra android:name="corsica.universita.aplomb.SOURCE" android:value="raccourci" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="releves" android:enabled="true" android:icon="@drawable/ic_raccourci"
+        android:shortcutShortLabel="@string/raccourci_releves">
+        <intent android:action="android.intent.action.MAIN"
+            android:targetPackage="corsica.universita.aplomb" android:targetClass="corsica.universita.aplomb.MainActivity">
+            <extra android:name="corsica.universita.aplomb.ONGLET" android:value="releves" />
+            <extra android:name="corsica.universita.aplomb.SOURCE" android:value="raccourci" />
+        </intent>
+    </shortcut>
+</shortcuts>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aplomb</string>
+
+    <!-- Canaux de notification : un par type de message, réglable séparément par l\'utilisateur. -->
+    <string name="canal_sync">Synchronisation</string>
+    <string name="canal_sync_desc">Confirme l\'arrivée au serveur des relevés pris hors ligne.</string>
+    <string name="canal_messages">Messages</string>
+    <string name="canal_messages_desc">Messages envoyés par le serveur d\'Aplomb.</string>
+    <string name="canal_surveillance">Surveillance en cours</string>
+    <string name="canal_surveillance_desc">Notification permanente pendant une surveillance d\'aplomb.</string>
+    <string name="canal_alerte">Alertes d\'aplomb</string>
+    <string name="canal_alerte_desc">L\'objet surveillé a bougé au-delà du seuil.</string>
+
+    <string name="notif_sync_titre">Relevés synchronisés</string>
+    <plurals name="notif_sync_texte">
+        <item quantity="one">Votre relevé pris hors ligne est bien arrivé au serveur.</item>
+        <item quantity="other">Vos %d relevés pris hors ligne sont bien arrivés au serveur.</item>
+    </plurals>
+
+    <string name="surveillance_titre">Surveillance d\'aplomb</string>
+    <string name="surveillance_reference">Prise de la référence… Posez le téléphone. Seuil %1$s°.</string>
+    <string name="surveillance_texte">Écart actuel %1$s° · seuil %2$s°</string>
+    <string name="surveillance_arreter">Arrêter</string>
+    <string name="alerte_titre">L\'aplomb a bougé</string>
+    <string name="alerte_texte">Écart de %1$s° par rapport à la référence (seuil %2$s°).</string>
+    <string name="alerte_note">Alerte de surveillance (seuil %1$s°)</string>
+
+    <string name="tuile_titre">Aplomb</string>
+    <string name="tuile_active">Surveillance active</string>
+    <string name="tuile_inactive">Surveillance</string>
+
+    <string name="raccourci_niveau">Niveau</string>
+    <string name="raccourci_boussole">Boussole</string>
+    <string name="raccourci_releves">Relevés</string>
+</resources>
